@@ -8,11 +8,13 @@ def get_map_line_list(line: str) -> dict:
 def number_in_range(number: int, range_dict: dict) -> int:
 	source_range_start = range_dict.get("source_range_start")
 	dest_range_start = range_dict.get("dest_range_start")
-	range_length = range_dict.get("range_length")
+	range_length = range_dict.get("range_length") - 1
 	source_range_end = source_range_start + range_length
 	dest_range_end = dest_range_start + range_length
-	if (number >= source_range_start and number < source_range_end):
+	if (number >= source_range_start and number <= source_range_end):
 		offset = source_range_end - number
+		if ((dest_range_end - offset) < 0):
+			print("illegal")
 		return(dest_range_end - offset)
 	return (-1)
 
@@ -80,7 +82,7 @@ def fill_dict(map_line: list, previous_dict: dict, switch: bool) -> dict:
 			number_found = number_in_range(key, map_line_range_dict)
 			if (number_found != -1):
 				count_seed_dict[key] = number_found
-	count_seed_dict = seed_not_found(count_seed_dict)
+	count_seed_dict = seed_not_found(count_seed_dict, previous_dict)
 	return (count_seed_dict)
 
 def get_location(seed: int, list_with_dicts: list, index: int) -> int:
@@ -104,6 +106,7 @@ def get_location_dict(seed_list: list, list_with_dicts: list, file_as_list: list
 def solve(filename: str):
 	file_as_list = convert_file_to_list(filename)
 	dicts_file = get_dicts_file(filename)
+	print(dicts_file)
 	seed_list = get_seeds(file_as_list)
 	location_dict = get_location_dict(seed_list, dicts_file, file_as_list)
 	is_lowest = 0
@@ -117,13 +120,11 @@ def solve(filename: str):
 				is_lowest = value
 	return (is_lowest)
 
-map_line = get_map_line_list("52 50 48")
-tests = [[0, 1], [48, 49, 50, 51], [96, 97, 98, 99]]
-for test in tests:
-	for number in test:
-		
-print(number_in_range(98, map_line))
-# start_time = timeit.default_timer()
-# # print(solve("example_mutated"))
-# end_time = timeit.default_timer()
-# print(f"runtime: {end_time - start_time}")
+start_time = timeit.default_timer()
+# for i in range(10000):
+# 	test = solve("example")
+# 	if (test != 35):
+# 		print("volatile")
+print(solve("input"))
+end_time = timeit.default_timer()
+print(f"runtime: {end_time - start_time}")
