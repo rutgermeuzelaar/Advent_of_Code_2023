@@ -4,7 +4,7 @@ def parse_file(filename: str) -> list:
 	for line in file:
 		if (line != '\n'):
 			parsed_file.append(line)
-	print(parsed_file)
+	file.close()
 	return (parsed_file)
 
 def get_instructions(parsed_file) -> str:
@@ -15,7 +15,6 @@ def get_instructions(parsed_file) -> str:
 		instructions.append(origin[i])
 		i += 1
 	instructions = ''.join(instructions)
-	print(instructions)
 	return (instructions)
 
 def get_nodes(parsed_file) -> list:
@@ -29,17 +28,17 @@ def get_nodes(parsed_file) -> list:
 		value_1 = []
 		value_2 = []
 		values = []
-		while (node[i].isalpha()):
+		while (node[i].isalnum()):
 			key.append(node[i])
 			i += 1
-		while (not(node[i].isalpha())):
+		while (not(node[i].isalnum())):
 			i += 1
-		while (node[i].isalpha()):
+		while (node[i].isalnum()):
 			value_1.append(node[i])
 			i += 1
-		while (not(node[i].isalpha())):
+		while (not(node[i].isalnum())):
 			i += 1
-		while (node[i].isalpha()):
+		while (node[i].isalnum()):
 			value_2.append(node[i])
 			i += 1
 		key = ''.join(key)
@@ -47,5 +46,3 @@ def get_nodes(parsed_file) -> list:
 		value_2 = ''.join(value_2)
 		nodes[key] = [value_1, value_2]
 	return nodes
-
-print(get_nodes(parse_file("example_2")))
